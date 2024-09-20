@@ -1,5 +1,5 @@
 const lo = ["European", "Australia", "United Kingdom", "United States"];
-const co = ['Ash', 'Black', 'Carolina Blue', 'Charcoal', 'Dark Chocolate', 'Dark Heather', 'Forest Green', 'Gold', 'Heliconia', 'Indigo Blue', 'Irish Green', 'Light Blue', 'Light Pink', 'Maroon', 'Navy', 'Orange', 'Purple', 'Red', 'Royal', 'Sport Grey', 'White', 'Sand', 'Antique Cherry Red', 'Heather Grey', 'Kelly Green', 'Bottle Green', 'Fire Red', 'Hot Chocolate', 'Oxford Navy', 'Sun Yellow', 'Arctic White', 'Jet Black', 'Sky Blue', 'Steel Grey'];
+const co = ['Ash', 'Azalea', 'Black', 'Carolina Blue', 'Charcoal', 'Dark Chocolate', 'Dark Heather', 'Forest Green', 'Gold', 'Heliconia', 'Irish Green', 'Light Blue', 'Light Pink', 'Maroon', 'Navy', 'Orange', 'Purple', 'Red', 'Royal', 'Sport Grey', 'White', 'Sand', 'Military Green', 'Antique Cherry Red', 'Heather Grey', 'Kelly Green', 'Bottle Green', 'Burgundy', 'Fire Red', 'Hot Chocolate', 'Hot Pink', 'Oxford Navy', 'Sun Yellow', 'Arctic White', 'Jet Black', 'Sky Blue'];
 const si = ['S','M','L','XL','2XL','3XL','4XL','5XL'];
 const st = ['Front','Back','Both Sides','Front Right Sleeve','Back Right Sleeve','Both Sides Right Sleeve','Front Left Sleeve','Back Left Sleeve','Both Sides Left Sleeve','Front Both Sleeves','Back Both Sleeves','Both Sides Both Sleeves'];
 
