@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đọc và cắt file CSV</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h1>Đọc và cắt file XLSX thành CSV</h1>
+    
+    <!-- Trường nhập cho file -->
+    <input type="file" id="fileInput" />
+
+    <!-- Trường nhập để chọn số dòng tối đa cho mỗi file -->
+    <label for="maxRowsInput">Số dòng tối đa mỗi file:</label>
+    <input type="number" id="maxRowsInput" value="500" />
+
+    <!-- Hiển thị số dòng -->
+    <p id="rowCount">Số dòng: </p>
+
+    <!-- Nút cắt file -->
+    <button id="splitButton" style="display:none;">Cắt và xuất CSV</button>
+
+    <script>
+        let jsonData = [];  // Dữ liệu sẽ được lưu trong mảng này
+
+        // Hàm xử lý sự kiện khi người dùng chọn file
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+
+                    // Đọc sheet đầu tiên
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+
+                    // Chuyển sheet thành mảng các đối tượng (JSON), giữ các cột trống bằng cách dùng `defval: null`
+                    jsonData = XLSX.utils.sheet_to_json(sheet, { defval: null });
+
+                    // In số lượng dòng
+                    const rowCount = jsonData.length;
+                    document.getElementById('rowCount').innerText = `Số dòng: ${rowCount}`;
+
+                    // Hiển thị nút cắt file nếu có dữ liệu
+                    if (rowCount > 0) {
+                        document.getElementById('splitButton').style.display = 'inline-block';
+                    }
+                };
+
+                reader.readAsArrayBuffer(file);
+            } else {
+                alert("Vui lòng chọn một file .xlsx");
+            }
+        });
+
+        // Hàm cắt file và xuất ra CSV
+        document.getElementById('splitButton').addEventListener('click', function () {
+            const maxRowsInput = document.getElementById('maxRowsInput').value;  // Lấy giá trị từ input
+            const maxRows = parseInt(maxRowsInput, 10);  // Chuyển đổi sang số nguyên
+            if (isNaN(maxRows) || maxRows <= 0) {
+                alert('Vui lòng nhập số dòng tối đa hợp lệ!');
+                return;
+            }
+
+            const totalRows = jsonData.length;
+            const numberOfFiles = Math.ceil(totalRows / maxRows);  // Số file cần tạo
+
+            for (let i = 0; i < numberOfFiles; i++) {
+                // Lấy dữ liệu con từ vị trí i * maxRows đến (i + 1) * maxRows
+                const chunk = jsonData.slice(i * maxRows, (i + 1) * maxRows);
+
+                // Chuyển chunk thành định dạng CSV
+                const newSheet = XLSX.utils.json_to_sheet(chunk);
+                const csvContent = XLSX.utils.sheet_to_csv(newSheet, { FS: ',', RS: '\n', strip: true });
+
+                // Tạo đối tượng Blob để lưu file CSV
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+
+                // Tạo thẻ link để tải xuống
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `output_${i + 1}.csv`;
+                link.click();
+
+                // Giải phóng bộ nhớ URL
+                URL.revokeObjectURL(url);
+            }
+        });
+    </script>
+</body>
+</html>
