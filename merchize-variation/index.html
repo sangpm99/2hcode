@@ -1,0 +1,122 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loại bỏ trùng lặp và copy kết quả</title>
+    <style>
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+        #result {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Nhập số liệu:</h2>
+    <textarea id="inputArea" placeholder="Nhập các giá trị, mỗi giá trị trên 1 dòng..."></textarea>
+    <button onclick="processInput()">Xử lý và Copy</button>
+
+    <h3>Kết quả:</h3>
+    <div id="result"></div>
+
+    <script>
+        function processInput() {
+            // Lấy giá trị từ textarea và tách thành mảng, loại bỏ khoảng trắng
+            const input = document.getElementById("inputArea").value.trim().split('\n');
+            
+            // Loại bỏ các giá trị trùng lặp và giữ nguyên thứ tự
+            const uniqueValues = [...new Set(input.map(item => item.trim()).filter(item => item !== ""))];
+
+            // Gộp kết quả thành chuỗi với dấu phẩy
+            const result = uniqueValues.join(',');
+
+            // Hiển thị kết quả
+            document.getElementById("result").textContent = result;
+
+            // Sao chép kết quả vào clipboard
+            copyToClipboard(result);
+        }
+
+        function copyToClipboard(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+        }
+    </script>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loại bỏ trùng lặp và copy kết quả</title>
+    <style>
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+        #result {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Nhập số liệu:</h2>
+    <textarea id="inputArea" placeholder="Nhập các giá trị, mỗi giá trị trên 1 dòng..."></textarea>
+    <button onclick="processInput()">Xử lý và Copy</button>
+
+    <h3>Kết quả:</h3>
+    <div id="result"></div>
+
+    <script>
+        function processInput() {
+            // Lấy giá trị từ textarea và tách thành mảng, loại bỏ khoảng trắng
+            const input = document.getElementById("inputArea").value.trim().split('\n');
+            
+            // Loại bỏ các giá trị trùng lặp và giữ nguyên thứ tự
+            const uniqueValues = [...new Set(input.map(item => item.trim()).filter(item => item !== ""))];
+
+            // Gộp kết quả thành chuỗi với dấu phẩy
+            const result = uniqueValues.join(',');
+
+            // Hiển thị kết quả
+            document.getElementById("result").textContent = result;
+
+            // Sao chép kết quả vào clipboard
+            copyToClipboard(result);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+            }).catch(err => {
+                console.error("Sao chép thất bại: ", err);
+            });
+        }
+    </script>
+
+</body>
+</html>

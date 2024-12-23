@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy URL and File Names</title>
+</head>
+<body>
+
+<h2>Enter URLs:</h2>
+<textarea id="urlInput" rows="5" cols="60" placeholder="Enter URLs separated by commas..."></textarea>
+<div id="urlList"></div>
+<button id="copyFileNamesButton">Copy File Names</button>
+<button id="copyUrlButton">Copy URL</button>
+
+<script>
+    // Function to ensure URL has a valid image extension and transform if needed
+    function ensureImageExtension(url) {
+        const imageExtensions = ['.png', '.jpg', '.jpeg', '.webp'];
+
+        // If the URL ends with .jpg, transform it to .jpeg
+        if (url.endsWith('.jpg')) {
+            return url.replace('.jpg', '.jpeg');
+        }
+
+        // Check if URL ends with any valid image extension
+        if (!imageExtensions.some(ext => url.endsWith(ext))) {
+            // Remove all text after the last dot, then add .jpeg
+            const lastSlashIndex = url.lastIndexOf('/');
+            const lastDotIndex = url.lastIndexOf('.');
+            // If there is a dot after the last slash, remove the text after it and append .jpeg
+            if (lastDotIndex > lastSlashIndex) {
+                url = url.substring(0, lastDotIndex);
+            }
+            return url + '.jpeg'; // Append `.jpeg` if no extension is found
+        }
+
+        return url; // Return the URL as is if it has a valid image extension
+    }
+
+    // Function to update the displayed URLs
+    function updateUrlList() {
+        const urlInput = document.getElementById('urlInput').value;
+        const urlArray = urlInput.split(',').map(url => ensureImageExtension(url.trim())); // Ensure extensions
+        const urlListDiv = document.getElementById('urlList');
+        
+        // Clear the existing list
+        urlListDiv.innerHTML = '';
+
+        // Display each URL in the HTML
+        urlArray.forEach(function(link) {
+            if (link) { // Check if link is not empty
+                const para = document.createElement('p');
+                para.textContent = link;
+                urlListDiv.appendChild(para);
+            }
+        });
+    }
+
+    // Event listener for input change to update URL list
+    document.getElementById('urlInput').addEventListener('input', updateUrlList);
+
+    // Function to extract file names and copy to clipboard
+    document.getElementById('copyFileNamesButton').addEventListener('click', function() {
+        const urlInput = document.getElementById('urlInput').value;
+        const urlArray = urlInput.split(',').map(url => ensureImageExtension(url.trim())); // Ensure extensions
+
+        const fileNames = urlArray.map(link => {
+            return link.substring(link.lastIndexOf('/') + 1);
+        }).join(',');
+
+        // Copy file names to clipboard
+        const textArea = document.createElement('textarea');
+        textArea.value = fileNames;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+    });
+
+    // Function to copy original URLs to clipboard, each URL on a new line
+    document.getElementById('copyUrlButton').addEventListener('click', function() {
+        const urlInput = document.getElementById('urlInput').value;
+        const urlArray = urlInput.split(',').map(url => url.trim()); // Only split by commas, no modification to URLs
+
+        // Copy full URLs to clipboard with line breaks
+        const urlsWithLineBreaks = urlArray.join('\n');
+        const textArea = document.createElement('textarea');
+        textArea.value = urlsWithLineBreaks; // Join URLs with newline
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+    });
+</script>
+
+</body>
+</html>

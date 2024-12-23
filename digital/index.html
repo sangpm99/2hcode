@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital</title>
+</head>
+<body>
+    <h2>Enter Domain</h2>
+    <input type="text" id="site_domain">
+
+    <br>
+    <h2>Enter Site Name</h2>
+    <input type="text" id="site_name">
+
+    <br>
+    <h2>Enter Email</h2>
+    <input type="text" id="site_email">
+
+    <br>
+    <h2>Enter Address</h2>
+    <input type="text" id="site_address">
+
+    <br>
+    <h2>Choose Flow</h2>
+    <ul>
+        <li>
+            <a href="">Logo</a>
+        </li>
+
+        <li>
+            <a href="">Favicon</a>
+        </li>
+    </ul>
+
+    <br>
+    <h2>Choose Page</h2>
+    <ul>
+        <li>
+            Home
+            <button id="btn_home">Copy</button>
+        </li>
+
+        <li>
+            Renewal Policy
+            <button id="btn_renewal_policy" onclick="handleRenewalPolicy()">Copy</button>
+        </li>
+
+        <li>
+            Refund Policy
+            <button id="btn_refund_policy" onclick="handleRefundPolicy()">Copy</button>
+        </li>
+
+        <li>
+            Terms of Use
+            <button id="btn_terms_of_use">Copy</button>
+        </li>
+    </ul>
+
+    <script src="./script.js"></script>
+</body>
+</html>

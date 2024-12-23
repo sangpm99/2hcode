@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đọc và cắt file CSV</title>
+    <title>Đọc và cắt file XLSX</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
-    <h1>Đọc và cắt file XLSX thành CSV</h1>
+    <h1>Đọc và cắt file XLSX thành XLSX</h1>
     
     <!-- Trường nhập cho file -->
     <input type="file" id="fileInput" />
@@ -20,7 +20,7 @@
     <p id="rowCount">Số dòng: </p>
 
     <!-- Nút cắt file -->
-    <button id="splitButton" style="display:none;">Cắt và xuất CSV</button>
+    <button id="splitButton" style="display:none;">Cắt và xuất XLSX</button>
 
     <script>
         let jsonData = [];  // Dữ liệu sẽ được lưu trong mảng này
@@ -59,7 +59,7 @@
             }
         });
 
-        // Hàm cắt file và xuất ra CSV
+        // Hàm cắt file và xuất ra XLSX
         document.getElementById('splitButton').addEventListener('click', function () {
             const maxRowsInput = document.getElementById('maxRowsInput').value;  // Lấy giá trị từ input
             const maxRows = parseInt(maxRowsInput, 10);  // Chuyển đổi sang số nguyên
@@ -77,18 +77,22 @@
                 // Lấy dữ liệu con từ vị trí i * maxRows đến (i + 1) * maxRows
                 const chunk = jsonData.slice(i * maxRows, (i + 1) * maxRows);
 
-                // Chuyển chunk thành định dạng CSV
+                // Chuyển chunk thành định dạng sheet
                 const newSheet = XLSX.utils.json_to_sheet(chunk);
-                const csvContent = XLSX.utils.sheet_to_csv(newSheet, { FS: ',', RS: '\n', strip: true });
+                const newWorkbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(newWorkbook, newSheet, `Sheet1`);
 
-                // Tạo đối tượng Blob để lưu file CSV
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                // Xuất workbook thành file Excel
+                const excelData = XLSX.write(newWorkbook, { bookType: 'xlsx', type: 'array' });
+
+                // Tạo đối tượng Blob để lưu file XLSX
+                const blob = new Blob([excelData], { type: 'application/octet-stream' });
                 const url = URL.createObjectURL(blob);
 
                 // Tạo thẻ link để tải xuống
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `output_${i + 1}.csv`;
+                link.download = `output_${i + 1}.xlsx`;
                 link.click();
 
                 // Giải phóng bộ nhớ URL

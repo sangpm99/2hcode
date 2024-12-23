@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mở nhiều tab</title>
+</head>
+<body>
+    <h2>Nhập các liên kết (mỗi dòng một liên kết)</h2>
+    <textarea id="linkTextarea" rows="10" cols="50" placeholder="Nhập các link tại đây..."></textarea>
+    <br><br>
+    <button onclick="openLinks()">Mở tất cả liên kết</button>
+
+    <script>
+        function openLinks() {
+            // Lấy nội dung từ textarea
+            const links = document.getElementById('linkTextarea').value.split('\n');
+            
+            // Duyệt qua từng dòng (tức mỗi link) và mở tab mới
+            links.forEach(link => {
+                if (link.trim()) { // Chỉ mở nếu link không trống
+                    const url = link.trim();
+                    window.open(url, '_blank');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
